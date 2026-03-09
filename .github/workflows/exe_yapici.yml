@@ -1,4 +1,4 @@
-name: Hedgehog Sentinel Final Build
+name: Hedgehog EXE Builder
 
 on: [push]
 
@@ -8,22 +8,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Python Setup
+    - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: Install Libraries
+    - name: Install Tools
       run: |
         pip install PyQt6 PyQt6-WebEngine pyinstaller
 
-    - name: Generate Folder Distribution
+    - name: Build EXE (No-Fail Mode)
       run: |
-        # --onedir modu DLL hatalarını kökten çözer
-        pyinstaller --onedir --windowed --name "Hedgehog_Sentinel" main.py
+        # --collect-all komutu Windows'taki kütüphane hatalarını çözer
+        pyinstaller --onedir --windowed --collect-all PyQt6 --collect-all PyQt6_WebEngine --name "Hedgehog_Sentinel" main.py
 
-    - name: Upload Finished Program
+    - name: Upload EXE Folder
       uses: actions/upload-artifact@v4
       with:
-        name: Hedgehog_Sentinel_Windows_Pack
+        name: Hedgehog_Sentinel_Windows
         path: dist/Hedgehog_Sentinel/
