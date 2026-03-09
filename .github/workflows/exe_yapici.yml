@@ -1,16 +1,16 @@
-name: Hedgehog Sentinel EXE Olusturucu
+name: Hedgehog Sentinel EXE Build
 
-on:
-  push:
-    branches: [ "main" ] # Kodunu her güncellediğinde otomatik çalışır
+on: [push]
 
 jobs:
-  windows_derleme:
-    runs-on: windows-latest # GitHub senin için Windows açar
-    
+  build:
+    runs-on: windows-latest
     steps:
     - name: Kodlari Cek
       uses: actions/checkout@v4
+
+    - name: Dosyalari Kontrol Et (Hata Ayiklama)
+      run: dir  # Bu komut GitHub'ın hangi dosyaları gördüğünü bize loglarda gösterecek
 
     - name: Python Kur
       uses: actions/setup-python@v5
@@ -19,16 +19,15 @@ jobs:
 
     - name: Kutphaneleri Yukle
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pyinstaller
+        pip install PyQt6 PyQt6-WebEngine pyinstaller
 
-    - name: EXE Dosyasini Pişir
+    - name: EXE Olustur (Hedgehog Core)
       run: |
+        # Eger dosyanin adi main.py degilse buradaki ismi degistirmelisin!
         pyinstaller --onefile --windowed --name "Hedgehog_Sentinel" main.py
 
-    - name: EXE Dosyasini Teslim Et
+    - name: Dosyayi Yukle
       uses: actions/upload-artifact@v4
       with:
-        name: Hedgehog-Sentinel-Windows-Sürümü
+        name: Hedgehog-Sentinel-Windows-Surumu
         path: dist/Hedgehog_Sentinel.exe
