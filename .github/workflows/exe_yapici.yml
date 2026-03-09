@@ -21,10 +21,9 @@ jobs:
       run: |
         pip install PyQt6 PyQt6-WebEngine pyinstaller
 
-    - name: EXE Olustur (Hedgehog Core)
+  - name: Create EXE (DLL Hatalarini Coz)
       run: |
-        # Eger dosyanin adi main.py degilse buradaki ismi degistirmelisin!
-        pyinstaller --onefile --windowed --name "Hedgehog_Sentinel" main.py
+        pyinstaller --onefile --windowed --collect-all PyQt6 --collect-all PyQt6_WebEngine --name "Hedgehog_Sentinel" main.py
 
     - name: Dosyayi Yukle
       uses: actions/upload-artifact@v4
